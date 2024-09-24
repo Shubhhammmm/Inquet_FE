@@ -160,7 +160,7 @@ const AdminView = () => {
                   Wicket
                 </Button>
               </Grid>
-              <Grid item>
+              {/* <Grid item>
                 <Button
                   variant="contained"
                   color="error"
@@ -168,7 +168,7 @@ const AdminView = () => {
                 >
                   Reset Match
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
           </>
         ) : (
