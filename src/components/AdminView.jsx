@@ -18,13 +18,13 @@ const AdminView = () => {
     const fetchMatch = async () => {
       try {
         const res = await axios.get(
-          "https://incquet-be.onrender.com/api/match/current"
+          "https://inquet-be.onrender.com/api/match/current"
         );
 
         if (!res.data) {
           console.log("Initializing match...");
           const initRes = await axios.post(
-            "https://incquet-be.onrender.com/api/match/initialize"
+            "https://inquet-be.onrender.com/api/match/initialize"
           );
           setMatch(initRes.data);
         } else {
@@ -51,7 +51,7 @@ const AdminView = () => {
 
   const handleScoreUpdate = async (run_scored, is_wicket = false) => {
     try {
-      await axios.post("https://incquet-be.onrender.com/api/match/ball", {
+      await axios.post("https://inquet-be.onrender.com/api/match/ball", {
         run_scored,
         is_wicket,
       });
@@ -64,7 +64,7 @@ const AdminView = () => {
   const handleResetMatch = async () => {
     try {
       const res = await axios.post(
-        "https://incquet-be.onrender.com/api/match/initialize"
+        "https://inquet-be.onrender.com/api/match/initialize"
       );
       setMatch(res.data);
       socket.emit("score-update");

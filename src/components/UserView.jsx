@@ -11,7 +11,7 @@ const UserView = () => {
     const fetchMatchData = async () => {
       try {
         const response = await axios.get(
-          "https://incquet-be.onrender.com/api/match/current"
+          "https://inquet-be.onrender.com/api/match/current"
         );
         setMatch(response.data);
       } catch (error) {
