@@ -12,35 +12,41 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
-// Custom styles for Admin Panel
+// Custom styles for enhanced UI
 const useStyles = makeStyles((theme) => ({
   container: {
-    marginTop: "40px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    minHeight: "80vh",
+    minHeight: "100vh",
+    background: "linear-gradient(to right, #eceff1, #e0f7fa)",
   },
   paper: {
-    padding: "30px",
-    maxWidth: "600px",
+    padding: "40px",
+    maxWidth: "650px",
     textAlign: "center",
-    borderRadius: "12px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-    background: "linear-gradient(135deg, #f5f7fa, #cfd8dc)",
+    borderRadius: "16px",
+    boxShadow: "0px 10px 30px rgba(0,0,0,0.15)",
+    backgroundColor: "#fff",
   },
   title: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: "1rem",
+    fontSize: "2.4rem",
+    fontWeight: "600",
+    color: "#424242",
+    marginBottom: "20px",
   },
-  score: {
-    fontSize: "1.8rem",
-    color: "#d32f2f",
+  scoreContainer: {
+    background: "#e3f2fd",
+    borderRadius: "8px",
+    padding: "20px",
+    margin: "20px 0",
+  },
+  scoreText: {
+    fontSize: "2.2rem",
+    color: "#1e88e5",
     fontWeight: "bold",
   },
-  over: {
+  overText: {
     fontSize: "1.2rem",
     color: "#1976d2",
   },
@@ -48,24 +54,32 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "20px",
   },
   scoreButton: {
-    fontSize: "1rem",
-    padding: "10px 15px",
-    minWidth: "50px",
+    fontSize: "1.1rem",
+    padding: "12px 18px",
+    minWidth: "60px",
+    "&:hover": {
+      transform: "scale(1.05)",
+      transition: "0.2s",
+    },
   },
-  resetButton: {
-    marginTop: "20px",
-    backgroundColor: "#e53935",
+  wicketButton: {
+    backgroundColor: "#d32f2f",
     color: "#fff",
     "&:hover": {
-      backgroundColor: "#c62828",
+      backgroundColor: "#b71c1c",
+    },
+  },
+  resetButton: {
+    marginTop: "30px",
+    backgroundColor: "#ff7043",
+    color: "#fff",
+    fontWeight: "bold",
+    "&:hover": {
+      backgroundColor: "#f4511e",
     },
   },
   loader: {
-    color: "#d32f2f",
-  },
-  noData: {
-    color: "#666",
-    fontStyle: "italic",
+    color: "#1e88e5",
   },
 }));
 
@@ -142,20 +156,24 @@ const AdminView = () => {
 
   return (
     <Container className={classes.container}>
-      <Paper className={classes.paper} elevation={4}>
-        <Typography className={classes.title} variant="h4">
-          Admin Panel
-        </Typography>
+      <Paper className={classes.paper}>
+        <Typography className={classes.title}>Admin Control Panel</Typography>
+        
         {match ? (
           <>
-            <Typography className={classes.score}>
-              Score: {match.total_runs}/{match.total_wickets}
-            </Typography>
-            <Typography className={classes.over}>
-              Over: {match.current_over == 0 ? 0 : match.current_over - 1}
-              {":"}
-              {match.overs[match.overs.length - 1]?.balls.length || 0}
-            </Typography>
+            {/* Score Section */}
+            <Box className={classes.scoreContainer}>
+              <Typography className={classes.scoreText}>
+                {match.total_runs}/{match.total_wickets}
+              </Typography>
+              <Typography className={classes.overText}>
+                Over: {match.current_over == 0 ? 0 : match.current_over - 1}
+                {":"}
+                {match.overs[match.overs.length - 1]?.balls.length || 0}
+              </Typography>
+            </Box>
+            
+            {/* Action Buttons */}
             <Grid container spacing={2} justifyContent="center" className={classes.buttonGrid}>
               {[0, 1, 2, 3, 4, 6].map((run) => (
                 <Grid item key={run}>
@@ -172,14 +190,15 @@ const AdminView = () => {
               <Grid item>
                 <Button
                   variant="contained"
-                  color="secondary"
-                  className={classes.scoreButton}
+                  className={`${classes.scoreButton} ${classes.wicketButton}`}
                   onClick={() => handleScoreUpdate(0, true)}
                 >
                   Wicket
                 </Button>
               </Grid>
             </Grid>
+
+            {/* Reset Button */}
             <Button
               variant="contained"
               className={classes.resetButton}
@@ -189,7 +208,7 @@ const AdminView = () => {
             </Button>
           </>
         ) : (
-          <Typography className={classes.noData} variant="h6">
+          <Typography className={classes.overText}>
             No match data available
           </Typography>
         )}
