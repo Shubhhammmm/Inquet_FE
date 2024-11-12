@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import socket from "../socket";
 import axios from "axios";
+import socket from "../socket";
 import {
   Container,
   Typography,
@@ -10,40 +10,46 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
-// Custom styles for enhanced UI
+// Custom styles for enhanced UserView UI
 const useStyles = makeStyles((theme) => ({
   container: {
-    marginTop: "30px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    minHeight: "80vh",
+    minHeight: "100vh",
+    background: "linear-gradient(to right, #f1f8e9, #c8e6c9)",
   },
   paper: {
-    padding: "30px",
-    textAlign: "center",
+    padding: "40px",
     maxWidth: "600px",
-    borderRadius: "12px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-    background: "linear-gradient(135deg, #f8f9fa, #e9ecef)",
+    textAlign: "center",
+    borderRadius: "16px",
+    boxShadow: "0px 10px 30px rgba(0,0,0,0.15)",
+    backgroundColor: "#ffffff",
   },
   title: {
-    fontSize: "2rem",
-    color: "#333",
-    marginBottom: "1rem",
+    fontSize: "2.2rem",
+    fontWeight: "600",
+    color: "#424242",
+    marginBottom: "20px",
+  },
+  scoreContainer: {
+    background: "#e3f2fd",
+    borderRadius: "8px",
+    padding: "20px",
+    margin: "20px 0",
+  },
+  scoreText: {
+    fontSize: "2.2rem",
+    color: "#1e88e5",
     fontWeight: "bold",
   },
-  score: {
-    fontSize: "1.8rem",
-    color: "#d32f2f",
-    fontWeight: "bold",
-  },
-  over: {
+  overText: {
     fontSize: "1.2rem",
     color: "#1976d2",
   },
   loader: {
-    color: "#d32f2f",
+    color: "#1e88e5",
   },
   noData: {
     color: "#666",
@@ -82,25 +88,33 @@ const UserView = () => {
     };
   }, []);
 
+  if (loading)
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <CircularProgress className={classes.loader} />
+      </Box>
+    );
+
   return (
     <Container className={classes.container}>
       <Paper className={classes.paper} elevation={4}>
-        {loading ? (
-          <CircularProgress className={classes.loader} />
-        ) : match ? (
-          <>
-            <Typography className={classes.title} variant="h4">
-              Live Match Score
+        <Typography className={classes.title} variant="h4">
+          User View
+        </Typography>
+        
+        {match ? (
+          <Box className={classes.scoreContainer}>
+            {/* Score Display */}
+            <Typography className={classes.scoreText}>
+              {match.total_runs}/{match.total_wickets}
             </Typography>
-            <Typography className={classes.score}>
-              Score: {match.total_runs}/{match.total_wickets}
-            </Typography>
-            <Typography className={classes.over}>
-              Over: {match.current_over == 0 ? 0 : match.current_over - 1}
+            {/* Over Display */}
+            <Typography className={classes.overText}>
+              Over: {match.current_over === 0 ? 0 : match.current_over - 1}
               {":"}
               {match?.overs[match?.overs.length - 1]?.balls.length || 0}
             </Typography>
-          </>
+          </Box>
         ) : (
           <Typography className={classes.noData} variant="h6">
             No match data available
